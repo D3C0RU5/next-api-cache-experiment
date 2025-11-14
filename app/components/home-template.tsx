@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type HomeTemplateProps = {
@@ -8,10 +9,14 @@ type HomeTemplateProps = {
 
 export default function HomeTemplate({ initialData }: HomeTemplateProps) {
   const [data, setData] = useState(initialData);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const clearCache = async () => {
+    setIsLoading(true);
     await fetch("/api/hello/revalidate");
-    alert("Cache resetado! Recarregue a página para ver novos dados.");
+    router.refresh();
+    setIsLoading(false);
   };
 
   return (
@@ -22,7 +27,7 @@ export default function HomeTemplate({ initialData }: HomeTemplateProps) {
         onClick={clearCache}
         className="cursor-pointer hover:bg-white/90 hover:text-black py-1 px-3"
       >
-        Resetar Cache
+        {isLoading ? "Loading" : "Resetar Cache"}
       </button>
 
       {data && (
