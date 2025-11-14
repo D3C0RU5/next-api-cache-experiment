@@ -10,9 +10,13 @@ export default function Home() {
   } | null>(null);
 
   const fetchData = async () => {
-    const res = await fetch("/api/hello");
-    const json = await res.json();
-    setData(json);
+    const data = await fetch("/api/hello", {
+      next: {
+        revalidate: 60,
+        tags: ["hello-tag"],
+      },
+    }).then((res) => res.json());
+    setData(data);
   };
   const clearCache = async () => {
     await fetch("/api/hello/revalidate");
@@ -20,7 +24,7 @@ export default function Home() {
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1 className="mb-2">Teste de Cache API Next.js 16 (attempt 2)</h1>
+      <h1 className="mb-2">Teste de Cache API Next.js 16 (attempt 3)</h1>
 
       <button
         onClick={() => fetchData()}
