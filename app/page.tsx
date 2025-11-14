@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1 className="mb-2">Teste de Cache API Next.js 16</h1>
+      <h1 className="mb-2">Teste de Cache API Next.js 16 (attempt 2)</h1>
 
       <button
         onClick={() => fetchData()}
