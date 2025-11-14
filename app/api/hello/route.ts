@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { NextResponse } from "next/server";
+
+export const revalidate = 10;
 
 export async function GET(req: Request) {
-  const resetCache = req.headers.get("x-reset-cache");
+  const reset = req.headers.get("x-reset-cache");
 
-  if (resetCache) {
-    revalidatePath("/api/hello"); // invalida cache nativo do Next.js
+  if (reset) {
+    await revalidatePath("/api/hello");
   }
-
   const data = {
     message: "Hello World!",
     timestamp: new Date().toISOString(),
@@ -16,7 +17,7 @@ export async function GET(req: Request) {
 
   return NextResponse.json(data, {
     headers: {
-      "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
+      "x-next-cache-tags": "hello-tag",
     },
   });
 }
